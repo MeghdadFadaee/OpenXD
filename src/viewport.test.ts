@@ -20,6 +20,12 @@ describe("viewport helpers", () => {
     });
   });
 
+  it("fits complete bounds inside a narrow mobile viewport", () => {
+    const transform = fitBounds({ x: -500, y: -100, width: 1100, height: 800 }, { width: 390, height: 700 }, 40);
+    expect(transform.zoom).toBeCloseTo(310 / 1100);
+    expect(transform.pan).toEqual({ x: 0, y: 0 });
+  });
+
   it("focuses an artboard relative to the document center", () => {
     const transform = focusArtboard(artboards[0], artboardBounds(document), { width: 1000, height: 800 }, 100);
     expect(transform.zoom).toBe(1.5);

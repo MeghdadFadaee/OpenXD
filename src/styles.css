@@ -6,8 +6,8 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 720px; min-height: 100vh; overflow: hidden; }
-button { font: inherit; }
+body { margin: 0; min-width: 0; min-height: 100vh; overflow: hidden; }
+button { font: inherit; touch-action: manipulation; }
 
 .drop-screen {
   min-height: 100vh;
@@ -36,6 +36,7 @@ h1 { margin: 0; font-size: 34px; letter-spacing: -1.3px; }
 .brand span { width: 34px; height: 34px; border-radius: 9px; font-size: 13px; letter-spacing: -1px; }
 .brand strong { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .brand small { color: #777c8b; }
+.menu-button { display: none; }
 .toolbar { display: flex; align-items: center; gap: 4px; }
 .toolbar button, .toolbar output { height: 34px; min-width: 36px; padding: 0 10px; border: 1px solid #343744; border-radius: 7px; color: #daddE7; background: #222530; cursor: pointer; }
 .toolbar output { display: grid; place-items: center; min-width: 60px; color: #aeb2c1; font-size: 12px; }
@@ -60,11 +61,46 @@ h1 { margin: 0; font-size: 34px; letter-spacing: -1.3px; }
 .warnings li { padding: 8px 0; border-bottom: 1px solid #292c36; color: #aeb2bf; font-size: 11px; line-height: 1.4; }
 .warnings li small { display: block; color: #777c8b; }
 
-.canvas { position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; background-color: #11131a; background-image: radial-gradient(#343743 1px, transparent 1px); background-size: 20px 20px; }
+.canvas { position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; overscroll-behavior: none; user-select: none; cursor: grab; background-color: #11131a; background-image: radial-gradient(#343743 1px, transparent 1px); background-size: 20px 20px; }
 .canvas:active { cursor: grabbing; }
 .stage { position: relative; transform-origin: center; transition: transform .05s linear; }
 .document-stage { flex: 0 0 auto; }
-.document-view { display: block; overflow: visible; }
+.document-view { display: block; overflow: visible; pointer-events: none; }
 .document-artboard-label { fill: #969baa; font-size: 12px; }
 .artboard { display: block; overflow: visible; background: white; }
 .artboard-label { position: absolute; left: 0; top: -28px; max-width: 100%; color: #969baa; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 800px), (max-height: 600px) and (pointer: coarse) {
+  .drop-card { width: calc(100vw - 28px); padding: 34px 20px; border-radius: 18px; }
+  .drop-card h1 { font-size: 27px; }
+  .drop-hint { display: none; }
+
+  .app-shell { height: 100dvh; grid-template: calc(108px + env(safe-area-inset-top)) 1fr / 1fr; }
+  .topbar { grid-column: 1; flex-wrap: wrap; align-content: center; gap: 8px; padding: calc(8px + env(safe-area-inset-top)) 10px 8px; }
+  .brand { width: 100%; }
+  .brand strong { flex: 1; max-width: none; font-size: 14px; }
+  .brand small { display: none; }
+  .menu-button { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid #343744; border-radius: 8px; color: #daddE7; background: #222530; }
+  .toolbar { width: 100%; justify-content: stretch; }
+  .toolbar button, .toolbar output { height: 38px; flex: 1; min-width: 0; padding: 0 7px; }
+  .toolbar output { min-width: 48px; }
+  .toolbar .clear { margin-left: 4px; }
+
+  .sidebar { position: fixed; z-index: 5; top: 0; bottom: 0; left: 0; width: min(84vw, 320px); padding-top: env(safe-area-inset-top); transform: translateX(-105%); transition: transform .2s ease; box-shadow: 12px 0 40px #0009; }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-title { padding: 18px 20px; min-height: 58px; }
+  .artboard-list button { min-height: 62px; }
+  .sidebar-backdrop { display: block; position: fixed; z-index: 4; inset: 0; border: 0; background: #08090dbb; }
+
+  .canvas { grid-column: 1; }
+}
+
+@media (max-height: 600px) and (pointer: coarse) {
+  .app-shell { grid-template-rows: calc(58px + env(safe-area-inset-top)) 1fr; }
+  .topbar { flex-wrap: nowrap; padding-top: env(safe-area-inset-top); }
+  .brand { width: auto; flex: 1; }
+  .brand span { display: none; }
+  .toolbar { width: auto; flex: 1.5; }
+}

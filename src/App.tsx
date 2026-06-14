@@ -66,6 +66,13 @@ export default function App() {
     zoom: number;
   } | null>(null);
   const canvasRef = useRef<HTMLElement>(null);
+  const selectedTextRef = useRef<SVGTextElement | null>(null);
+
+  const clearTextSelection = useCallback(() => {
+    selectedTextRef.current?.classList.remove("selectable-text");
+    selectedTextRef.current = null;
+    window.getSelection()?.removeAllRanges();
+  }, []);
 
   useEffect(() => { panRef.current = pan; }, [pan]);
   useEffect(() => { zoomRef.current = zoom; }, [zoom]);
@@ -243,6 +250,7 @@ export default function App() {
         }}
         onPointerDown={(event) => {
           if (event.pointerType === "touch") return;
+          if (event.detail < 2) clearTextSelection();
           event.currentTarget.setPointerCapture(event.pointerId);
           dragRef.current = { x: event.clientX, y: event.clientY, originX: pan.x, originY: pan.y };
         }}
@@ -256,6 +264,18 @@ export default function App() {
         }}
         onPointerCancel={(event) => {
           if (event.pointerType !== "touch") dragRef.current = null;
+        }}
+        onDoubleClick={(event) => {
+          const target = event.target instanceof Element ? event.target.closest("text") : null;
+          if (!(target instanceof SVGTextElement)) return;
+          clearTextSelection();
+          target.classList.add("selectable-text");
+          selectedTextRef.current = target;
+          const range = window.document.createRange();
+          range.selectNodeContents(target);
+          const selection = window.getSelection();
+          selection?.removeAllRanges();
+          selection?.addRange(range);
         }}
       >
         {document.artboards.length || document.pasteboardLayers.length ? (

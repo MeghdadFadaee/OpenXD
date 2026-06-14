@@ -61,11 +61,13 @@ h1 { margin: 0; font-size: 34px; letter-spacing: -1.3px; }
 .warnings li { padding: 8px 0; border-bottom: 1px solid #292c36; color: #aeb2bf; font-size: 11px; line-height: 1.4; }
 .warnings li small { display: block; color: #777c8b; }
 
-.canvas { position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; overscroll-behavior: none; user-select: none; cursor: grab; background-color: #11131a; background-image: radial-gradient(#343743 1px, transparent 1px); background-size: 20px 20px; }
+.canvas { position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; overscroll-behavior: none; user-select: none; -webkit-user-select: none; cursor: grab; background-color: #11131a; background-image: radial-gradient(#343743 1px, transparent 1px); background-size: 20px 20px; }
 .canvas:active { cursor: grabbing; }
 .stage { position: relative; transform-origin: center; transition: transform .05s linear; }
 .document-stage { flex: 0 0 auto; }
-.document-view { display: block; overflow: visible; pointer-events: none; }
+.document-view { display: block; overflow: visible; }
+.document-view text { user-select: none; -webkit-user-select: none; cursor: default; }
+.document-view text.selectable-text { user-select: text; -webkit-user-select: text; cursor: text; }
 .document-artboard-label { fill: #969baa; font-size: 12px; }
 .artboard { display: block; overflow: visible; background: white; }
 .artboard-label { position: absolute; left: 0; top: -28px; max-width: 100%; color: #969baa; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

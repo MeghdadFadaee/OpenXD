@@ -1,0 +1,11 @@
+.idea/
+node_modules/
+dist/
+coverage/
+screenshots/
+example/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+.DS_Store
+
